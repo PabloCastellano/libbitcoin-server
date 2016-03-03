@@ -1,0 +1,3 @@
+usr/bin/*
+etc/libbitcoin/*
+usr/lib/lib*.so.*

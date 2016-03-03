@@ -1,0 +1,29 @@
+Source: libbitcoin-server
+Section: libs
+Priority: optional
+Maintainer: Pablo Castellano <pablo@anche.no>
+Build-Depends: debhelper, pkg-config, autoconf, automake, autotools-dev, libtool, libboost1.55-all-dev, libbitcoin-node, libsodium13, libczmqpp1
+Standards-Version: 3.9.4
+Vcs-Git: https://github.com/libbitcoin/libbitcoin-server.git
+Vcs-Browser: https://github.com/libbitcoin/libbitcoin-server
+Homepage: http://libbitcoin.dyne.org/
+
+Package: libbitcoin-server-dev
+Section: libdevel
+Architecture: any
+Depends: libbitcoin-server (= ${binary:Version}), ${misc:Depends}
+Description: Asynchronous C++ Bitcoin library - development files
+ libbitcoin-server
+ .
+ This package provides the development files (ie. includes, static library),
+ that allow to build software which uses libbitcoin-server.
+
+Package: libbitcoin-server
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Multi-Arch: same
+Description: Asynchronous C++ Bitcoin library
+ libbitcoin-server
+ .
+ This package contains the shared library for libbitcoin-server.
