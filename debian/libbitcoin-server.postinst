@@ -1,0 +1,55 @@
+#!/bin/sh
+set -e
+
+# checking libbitcoin account
+
+uid=`getent passwd libbitcoin | cut -d ":" -f 3`
+home=`getent passwd libbitcoin | cut -d ":" -f 6`
+
+# if there is the uid the account is there and we can do
+# the sanit(ar)y checks otherwise we can safely create it.
+
+if [ "$uid" ]; then
+    if [ "$home" = "/var/lib/libbitcoin" ]; then
+        :
+        #echo "debian-tor homedir check: ok"
+    else
+        echo "ERROR: libbitcoin account has an unexpected home directory!"
+        echo "It should be '/var/lib/libbitcoin', but it is '$home'."
+        echo "Removing the libbitcoin user might fix this, but the question"
+        echo "remains how you got into this mess to begin with."
+        exit 1
+    fi
+else
+    adduser --quiet \
+        --system \
+        --disabled-password \
+        --home /var/lib/libbitcoin \
+        --no-create-home \
+        --shell /bin/false \
+        --group \
+        libbitcoin
+fi
+
+for i in lib log; do
+    if ! [ -d "/var/$i/libbitcoin" ]; then
+        echo "Something or somebody made /var/$i/libbitcoin disappear."
+        echo "Creating one for you again."
+        mkdir "/var/$i/libbitcoin"
+    fi
+done
+
+chown libbitcoin:libbitcoin /var/lib/libbitcoin
+chmod 02750 /var/lib/libbitcoin
+
+if [ -e /var/run/libbitcoin-server ]; then
+    chown libbitcoin:libbitcoin /var/run/libbitcoin
+    chmod 02750 /var/run/libbitcoin
+fi
+
+chown libbitcoin:adm /var/log/libbitcoin
+chmod 02750 /var/log/libbitcoin
+
+#DEBHELPER#
+
+exit 0
