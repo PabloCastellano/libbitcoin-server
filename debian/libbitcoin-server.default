@@ -1,0 +1,8 @@
+# Defaults for libbitcoin-server initscript
+# sourced by /etc/init.d/libbitcoin-server
+# installed at /etc/default/libbitcoin-server by the maintainer scripts
+
+#
+# This is a bash shell fragment
+#
+RUN_DAEMON="yes"
