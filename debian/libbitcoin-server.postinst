@@ -50,6 +50,9 @@ fi
 chown libbitcoin:adm /var/log/libbitcoin
 chmod 02750 /var/log/libbitcoin
 
+# Initialize blockchain database in the configured directory
+/usr/sbin/bs -i
+
 #DEBHELPER#
 
 exit 0

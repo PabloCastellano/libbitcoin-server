@@ -5,4 +5,4 @@
 #
 # This is a bash shell fragment
 #
-RUN_DAEMON="no"
+RUN_DAEMON="yes"
