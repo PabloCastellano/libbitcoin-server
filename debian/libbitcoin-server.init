@@ -18,11 +18,12 @@
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/sbin/bs
+DAEMON_USER=libbitcoin
 NAME=bs
 DESC="libbitcoin-server daemon"
 BSLOGDIR=/var/log/libbitcoin
 BSPIDDIR=/var/run/libbitcoin
-BSPID=$BSPIDDIR/libbitcoin-server.pid
+PIDFILE=$BSPIDDIR/libbitcoin-server.pid
 DEFAULTSFILE=/etc/default/libbitcoin-server
 WAITFORDAEMON=60
 DEFAULT_ARGS=""
@@ -67,10 +68,10 @@ case "$1" in
 
         log_action_begin_msg "Starting $DESC"
 
-        if start-stop-daemon --stop --signal 0 --quiet --pidfile $BSPID --exec $DAEMON; then
+        if start-stop-daemon --stop --signal 0 --quiet --pidfile $PIDFILE --exec $DAEMON; then
             log_action_end_msg 0 "already running"
         else
-            if start-stop-daemon --start --quiet --pidfile $BSPID --exec $DAEMON -- $DEFAULT_ARGS $ARGS
+            if start-stop-daemon --start --quiet --background --pidfile $PIDFILE --make-pidfile -c $DAEMON_USER --exec $DAEMON -- $DEFAULT_ARGS $ARGS
             then
                 log_action_end_msg 0
             else
@@ -81,14 +82,14 @@ case "$1" in
         ;;
 	stop)
         log_action_begin_msg "Stopping $DESC"
-        pid=`cat $BSPID 2>/dev/null` || true
+        pid=`cat $PIDFILE 2>/dev/null` || true
 
-        if test ! -f $BSPID -o -z "$pid"; then
-            log_action_end_msg 0 "not running - there is no $BSPID"
+        if test ! -f $PIDFILE -o -z "$pid"; then
+            log_action_end_msg 0 "not running - there is no $PIDFILE"
             exit 0
         fi
 
-        if start-stop-daemon --stop --signal INT --quiet --pidfile $BSPID --exec $DAEMON; then
+        if start-stop-daemon --stop --quiet --pidfile $PIDFILE --exec $DAEMON; then
             wait_for_deaddaemon $pid
         elif kill -0 $pid 2>/dev/null; then
             log_action_end_msg 1 "Is $pid not $NAME?  Is $DAEMON a different binary now?"
@@ -100,15 +101,14 @@ case "$1" in
         ;;
     reload|force-reload)
         log_action_begin_msg "Reloading $DESC configuration"
-        pid=`cat $BSPID 2>/dev/null` || true
+        pid=`cat $PIDFILE 2>/dev/null` || true
   
-        if test ! -f $BSPID -o -z "$pid"; then
-            log_action_end_msg 1 "not running - there is no $BSPID"
+        if test ! -f $PIDFILE -o -z "$pid"; then
+            log_action_end_msg 1 "not running - there is no $PIDFILE"
             exit 1
         fi
   
-        if start-stop-daemon --stop --signal 1 --quiet --pidfile $BSPID --exec $DAEMON
-        then
+        if start-stop-daemon --stop --quiet --pidfile $PIDFILE --exec $DAEMON; then
             log_action_end_msg 0
         elif kill -0 $pid 2>/dev/null; then
             log_action_end_msg 1 "Is $pid not $NAME?  Is $DAEMON a different binary now?"
@@ -126,12 +126,12 @@ case "$1" in
         $0 start
 		;;
       status)
-        if test ! -r $(dirname $BSPID); then
-            log_failure_msg "cannot read PID file $BSPID"
+        if test ! -r $(dirname $PIDFILE); then
+            log_failure_msg "cannot read PID file $PIDFILE"
             exit 4
         fi
-        pid=`cat $BSPID 2>/dev/null` || true
-        if test ! -f $BSPID -o -z "$pid"; then
+        pid=`cat $PIDFILE 2>/dev/null` || true
+        if test ! -f $PIDFILE -o -z "$pid"; then
             log_failure_msg "$NAME is not running"
             exit 3
         fi
