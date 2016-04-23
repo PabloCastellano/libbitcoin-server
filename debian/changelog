@@ -1,4 +1,4 @@
-libbitcoin-server (2.4.0) unstable; urgency=medium
+libbitcoin-server (2.4.0) xenial; urgency=medium
 
   * Non-maintainer upload.
   * Upstream version 2.4.0.
