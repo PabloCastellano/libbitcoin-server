@@ -23,7 +23,7 @@ DESC="libbitcoin-server daemon"
 BSLOGDIR=/var/log/libbitcoin
 BSPIDDIR=/var/run/libbitcoin
 BSPID=$BSPIDDIR/libbitcoin-server.pid
-DEFAULTSFILE=/etc/default/$NAME
+DEFAULTSFILE=/etc/default/libbitcoin-server
 WAITFORDAEMON=60
 DEFAULT_ARGS=""
 
