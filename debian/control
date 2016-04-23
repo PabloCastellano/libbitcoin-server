@@ -21,7 +21,7 @@ Description: Asynchronous C++ Bitcoin library - development files
 Package: libbitcoin-server
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, adduser, ${misc:Depends}
 Multi-Arch: same
 Description: Asynchronous C++ Bitcoin library
  libbitcoin-server
