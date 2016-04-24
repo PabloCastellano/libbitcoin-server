@@ -47,7 +47,9 @@ chown libbitcoin:adm /var/log/libbitcoin
 
 # Initialize blockchain database in the configured directory
 if ! [ -d "/var/lib/libbitcoin/blockchain" ]; then
+    echo
     echo "Initializing blockchain in /var/lib/libbitcoin/blockchain."
+    echo
     /usr/sbin/bs -i
 fi
 
