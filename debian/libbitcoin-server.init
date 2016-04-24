@@ -22,8 +22,7 @@ DAEMON_USER=libbitcoin
 NAME=bs
 DESC="libbitcoin-server daemon"
 BSLOGDIR=/var/log/libbitcoin
-BSPIDDIR=/var/run/libbitcoin
-PIDFILE=$BSPIDDIR/$NAME.pid
+PIDFILE=/var/run/libbitcoin-server.pid
 DEFAULTSFILE=/etc/default/libbitcoin-server
 WAITFORDAEMON=60
 DEFAULT_ARGS=""
@@ -35,30 +34,6 @@ test -x $DAEMON || exit 0
 if [ -f $DEFAULTSFILE ]; then
 	. $DEFAULTSFILE
 fi
-
-wait_for_deaddaemon () {
-    pid=$1
-    sleep 1
-    if test -n "$pid"
-    then
-        if kill -0 $pid 2>/dev/null
-        then
-            cnt=0
-            while kill -0 $pid 2>/dev/null
-            do
-                cnt=`expr $cnt + 1`
-                if [ $cnt -gt $WAITFORDAEMON ]
-                then
-                    log_action_end_msg 1 "still running"
-                    exit 1
-                fi
-                sleep 1
-                [ "`expr $cnt % 3`" != 2 ] || log_action_cont_msg ""
-            done
-        fi
-    fi
-    log_action_end_msg 0
-}
 
 case "$1" in
 	start)
@@ -90,15 +65,7 @@ case "$1" in
             exit 0
         fi
 
-        if start-stop-daemon --stop --quiet --pidfile $PIDFILE --exec $DAEMON; then
-            wait_for_deaddaemon $pid
-        elif kill -0 $pid 2>/dev/null; then
-            log_action_end_msg 1 "Is $pid not $NAME?  Is $DAEMON a different binary now?"
-            exit 1
-        else
-            log_action_end_msg 1 "$DAEMON died: process $pid not running; or permission denied"
-            exit 1
-        fi
+        start-stop-daemon --stop --quiet --pidfile $PIDFILE --exec $DAEMON --retry 10
         ;;
     reload|force-reload)
         log_action_begin_msg "Reloading $DESC configuration"
