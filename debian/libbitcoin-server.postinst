@@ -41,9 +41,12 @@ if ! [ -d "/var/lib/libbitcoin/server" ]; then
     mkdir "/var/lib/libbitcoin/server"
 fi
 
-chown root:libbitcoin /var/log/libbitcoin -R
+# permission ugly fix
 chmod 775 /var/log/libbitcoin
+touch /var/log/libbitcoin/server_debug.log
+touch /var/log/libbitcoin/server_error.log
 chmod 664 /var/log/libbitcoin/*
+chown root:libbitcoin /var/log/libbitcoin -R
 
 # Initialize blockchain database in the configured directory
 if ! [ -d "/var/lib/libbitcoin/server/blockchain" ]; then
@@ -52,7 +55,9 @@ if ! [ -d "/var/lib/libbitcoin/server/blockchain" ]; then
     echo
     /usr/sbin/bs -i
     echo
-    echo 'Remember setting RUN_DAEMON="yes" in /etc/default/libbitcoin-server to run as a daemon'
+    echo 'Remember setting RUN_DAEMON="yes" in /etc/default/libbitcoin-server to run as a daemon.'
+    echo 'You can also run libbitcoin-server in foreground mode by typing:'
+    echo "su -c bs libbitcoin"
     echo
 
     chown libbitcoin:libbitcoin /var/lib/libbitcoin/server -R
