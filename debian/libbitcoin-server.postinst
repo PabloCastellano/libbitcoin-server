@@ -40,10 +40,10 @@ for i in lib log; do
 done
 
 chown libbitcoin:libbitcoin /var/lib/libbitcoin
-#chmod 755 /var/lib/libbitcoin
+chmod 755 /var/lib/libbitcoin
 
 chown libbitcoin:adm /var/log/libbitcoin
-#chmod 755 /var/log/libbitcoin
+chmod 755 /var/log/libbitcoin
 
 # Initialize blockchain database in the configured directory
 if ! [ -d "/var/lib/libbitcoin/blockchain" ]; then
