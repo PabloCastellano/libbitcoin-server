@@ -39,9 +39,6 @@ for i in lib log; do
     fi
 done
 
-chown libbitcoin:libbitcoin /var/lib/libbitcoin
-chmod 755 /var/lib/libbitcoin
-
 chown libbitcoin:adm /var/log/libbitcoin
 chmod 755 /var/log/libbitcoin
 
@@ -51,6 +48,11 @@ if ! [ -d "/var/lib/libbitcoin/blockchain" ]; then
     echo "Initializing blockchain in /var/lib/libbitcoin/blockchain."
     echo
     /usr/sbin/bs -i
+
+    chown libbitcoin:libbitcoin /var/lib/libbitcoin
+    chmod 775 /var/lib/libbitcoin
+    chmod 775 /var/lib/libbitcoin/blockchain
+    chmod 664 /var/lib/libbitcoin/blockchain/*
 fi
 
 #DEBHELPER#

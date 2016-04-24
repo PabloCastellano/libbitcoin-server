@@ -27,6 +27,7 @@ PIDFILE=$BSPIDDIR/$NAME.pid
 DEFAULTSFILE=/etc/default/libbitcoin-server
 WAITFORDAEMON=60
 DEFAULT_ARGS=""
+ARGS=""
 
 test -x $DAEMON || exit 0
 
