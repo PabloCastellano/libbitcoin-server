@@ -33,29 +33,31 @@ fi
 
 for i in lib log; do
     if ! [ -d "/var/$i/libbitcoin" ]; then
-        echo "Something or somebody made /var/$i/libbitcoin disappear."
-        echo "Creating one for you again."
         mkdir "/var/$i/libbitcoin"
     fi
 done
+
+if ! [ -d "/var/lib/libbitcoin/server" ]; then
+    mkdir "/var/lib/libbitcoin/server"
+fi
 
 chown libbitcoin:adm /var/log/libbitcoin
 chmod 755 /var/log/libbitcoin
 
 # Initialize blockchain database in the configured directory
-if ! [ -d "/var/lib/libbitcoin/blockchain" ]; then
+if ! [ -d "/var/lib/libbitcoin/server/blockchain" ]; then
     echo
-    echo "Initializing blockchain in /var/lib/libbitcoin/blockchain."
+    echo "Initializing blockchain in /var/lib/libbitcoin/server/blockchain."
     echo
     /usr/sbin/bs -i
     echo
     echo 'Remember setting RUN_DAEMON="yes" in /etc/default/libbitcoin-server to run as a daemon'
     echo
 
-    chown root:libbitcoin /var/lib/libbitcoin -R
-    chmod 775 /var/lib/libbitcoin
-    chmod 775 /var/lib/libbitcoin/blockchain
-    chmod 664 /var/lib/libbitcoin/blockchain/*
+    chown root:libbitcoin /var/lib/libbitcoin/server -R
+    chmod 775 /var/lib/libbitcoin/server
+    chmod 775 /var/lib/libbitcoin/server/blockchain
+    chmod 664 /var/lib/libbitcoin/server/blockchain/*
 fi
 
 #DEBHELPER#
