@@ -57,7 +57,7 @@ if ! [ -d "/var/lib/libbitcoin/server/blockchain" ]; then
     echo
     echo 'Remember setting RUN_DAEMON="yes" in /etc/default/libbitcoin-server to run as a daemon.'
     echo 'You can also run libbitcoin-server in foreground mode by typing:'
-    echo "su -c bs libbitcoin"
+    echo "su -c /usr/sbin/bs libbitcoin"
     echo
 
     chown libbitcoin:libbitcoin /var/lib/libbitcoin/server -R
