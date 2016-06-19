@@ -1,3 +1,10 @@
+libbitcoin-server (2.4.0-1) xenial; urgency=medium
+
+  * Enable shell for libbitcoin user - otherwise it won't run from terminal.
+  * Show bs full path.
+
+ -- Pablo Castellano <pablo@anche.no>  Sun, 19 Jun 2016 20:52:32 +0200
+
 libbitcoin-server (2.4.0) xenial; urgency=medium
 
   * Non-maintainer upload.

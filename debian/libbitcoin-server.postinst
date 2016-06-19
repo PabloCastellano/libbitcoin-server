@@ -23,10 +23,9 @@ if [ "$uid" ]; then
 else
     adduser --quiet \
         --system \
-        --disabled-password \
         --home /var/lib/libbitcoin \
         --no-create-home \
-        --shell /bin/false \
+        --shell /bin/bash \
         --group \
         libbitcoin
 fi
